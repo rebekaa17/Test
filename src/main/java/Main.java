@@ -1,61 +1,47 @@
-import java.sql.*;
+package org.example;
+
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 public class Main {
     public static void main(String[] args) {
-        String url = "jdbc:postgresql://localhost:5432/internship_db"; // URL i databazës
-        String user = "postgres"; // Emri i përdoruesit në PostgreSQL
-        String password = "fjalekalimi"; // Fjalëkalimi i përdoruesit
+        ConnectionManager cm = new ConnectionManager(
+                "jdbc:postgresql://localhost:5432/internship_db",
+                "postgres",
+                "fjalekalimi"
+        );
 
         try {
+            cm.connect();
 
-            Class.forName("org.postgresql.Driver");
 
-            // Krijo lidhjen me databazën
-            try (Connection conn = DriverManager.getConnection(url, user, password)) {
-                System.out.println("✅ Lidhja u bë me sukses!");
+            Map<String, String> koloneTip = new LinkedHashMap<>();
+            koloneTip.put("id", "SERIAL PRIMARY KEY");
+            koloneTip.put("emri", "VARCHAR(100)");
+            koloneTip.put("piket", "INT");
 
-                Statement stmt = conn.createStatement();
+            cm.createTable("studenti", koloneTip);
 
-                // a. Listo të gjitha tabelat në databazë
-                DatabaseMetaData meta = conn.getMetaData();
-                ResultSet tables = meta.getTables(null, null, "%", new String[] {"TABLE"});
-                System.out.println("\n📋 Tabelat në databazë:");
-                while (tables.next()) {
-                    System.out.println("Tabela: " + tables.getString("TABLE_NAME"));
-                }
 
-                // b. Lexo të gjithë rrjeshtat nga tabela kursi
-                System.out.println("\n📚 Kurset:");
-                ResultSet rs = stmt.executeQuery("SELECT * FROM kursi");
-                while (rs.next()) {
-                    System.out.println(rs.getInt("id") + ": " + rs.getString("emri"));
-                }
+            Student s1 = new Student(null, "Erion", 15);
+            cm.insertStudent(s1);
 
-                // c. Studentët me më shumë se 10 pikë
-                System.out.println("\n🎓 Studentët me më shumë se 10 pikë:");
-                rs = stmt.executeQuery("SELECT * FROM studenti WHERE piket > 10");
-                while (rs.next()) {
-                    System.out.println(rs.getString("emri") + " - " + rs.getInt("piket") + " pikë");
-                }
 
-                // d. Shto një student
-                System.out.println("\n➕ Shtojmë një student...");
-                stmt.executeUpdate("INSERT INTO studenti (emri, piket) VALUES ('Erion', 14)");
+            Student s = cm.getStudentById(1);
+            if (s != null) System.out.println("Student: " + s);
 
-                // e. Modifiko pikët e një studenti
-                System.out.println("\n✏️ Modifikojmë pikët për Erion...");
-                stmt.executeUpdate("UPDATE studenti SET piket = 17 WHERE emri = 'Erion'");
 
-                // f. Fshi një student
-                System.out.println("\n❌ Fshijmë studentin Erion...");
-                stmt.executeUpdate("DELETE FROM studenti WHERE emri = 'Erion'");
+            Student sUpdate = new Student(null, "Erion Berisha", 18);
+            cm.updateStudent(1, sUpdate);
 
-            }
-        } catch (ClassNotFoundException e) {
-            System.out.println("❌ Driver PostgreSQL nuk u gjet!");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("❌ Gabim në lidhje ose query:");
+
+            cm.deleteStudent(1);
+
+            cm.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
