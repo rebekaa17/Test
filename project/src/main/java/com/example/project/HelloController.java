@@ -1,4 +1,4 @@
-package com.example.rebeka;
+package com.example.project;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 
     @GetMapping("/")
-    public String home() {
-        return "U krijua nje projekt me SpringBoot;
+    public String hello() {
+        return "Hello, Spring Boot is working!";
     }
 }
