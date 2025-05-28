@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+
+
 @Entity
 @Table(name = "movie")
 @Data // Gjeneron getter, setter, toString, equals, hashCode
@@ -29,3 +31,4 @@ public class Movie {
     @Max(value = 2100, message = "Viti i prodhimit duhet të jetë realist")
     private Integer year;
 }
+

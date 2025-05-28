@@ -1,6 +1,10 @@
 package com.example.cinema.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "app_user")
@@ -9,14 +13,23 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Emri nuk duhet te jete bosh")
     private String name;
+
+    @Email(message = "Email-i duhet te jete ne format te sakte")
+    @NotBlank(message = "Email-i nuk duhet te jete bosh")
     private String email;
+
+    @Min(value = 13, message = "Mosha minimale duhet te jete 13 vjeç")
+    @Max(value = 120, message = "Mosha maksimale lejohet deri ne 120 vjeç")
+    private int age;
 
     public User() {}
 
-    public User(String name, String email) {
+    public User(String name, String email, int age) {
         this.name = name;
         this.email = email;
+        this.age = age;
     }
 
     public Long getId() {
@@ -41,5 +54,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
