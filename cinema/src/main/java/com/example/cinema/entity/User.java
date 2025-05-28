@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
+
+//u shtuan validimet per moshen dhe emailin
 @Entity
 @Table(name = "app_user")
 public class User {
