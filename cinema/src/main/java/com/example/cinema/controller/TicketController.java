@@ -3,9 +3,9 @@ package com.example.cinema.controller;
 import com.example.cinema.entity.Ticket;
 import com.example.cinema.entity.Showtime;
 import com.example.cinema.service.TicketService;
-import com.example.cinema.service.ShowtimeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.cinema.service.ShowtimeService;
 
 import java.util.List;
 
@@ -21,12 +21,10 @@ public class TicketController {
         this.showtimeService = showtimeService;
     }
 
-
     @GetMapping
     public List<Ticket> getAllTickets() {
         return ticketService.getAllTickets();
     }
-
 
     @PostMapping("/book")
     public ResponseEntity<?> bookTicket(@RequestBody Ticket ticket) {
@@ -38,7 +36,6 @@ public class TicketController {
         }
     }
 
-    //endpoint
     @GetMapping("/showtime/{id}")
     public ResponseEntity<List<Ticket>> getTicketsByShowtime(@PathVariable Long id) {
         Showtime showtime = showtimeService.getShowtimeById(id);
@@ -48,5 +45,4 @@ public class TicketController {
         List<Ticket> tickets = ticketService.getTicketsByShowtime(showtime);
         return ResponseEntity.ok(tickets);
     }
-
 }

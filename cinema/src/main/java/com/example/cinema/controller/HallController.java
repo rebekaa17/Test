@@ -1,9 +1,9 @@
 package com.example.cinema.controller;
 
 import com.example.cinema.entity.Hall;
-import com.example.cinema.service.HallService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.cinema.service.HallService;
 
 import java.util.List;
 

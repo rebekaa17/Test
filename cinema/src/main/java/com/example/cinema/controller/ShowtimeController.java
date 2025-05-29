@@ -1,9 +1,9 @@
 package com.example.cinema.controller;
 
 import com.example.cinema.entity.Showtime;
-import com.example.cinema.service.ShowtimeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.cinema.service.ShowtimeService;
 
 import java.util.List;
 
